@@ -10,15 +10,12 @@ import jakarta.persistence.Id;
 
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+
 import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "addresses", uniqueConstraints = {
-        @UniqueConstraint(name = "UniqueAddress", columnNames = { "street", "city", "zip_code", "street_number" })
-})
-
+@Table(name = "addresses")
 public class AddressEntity {
 
     @Id
