@@ -43,7 +43,7 @@ public class UserService {
 
         List<UserEntity> users = (List<UserEntity>) userRepository.findAll();
         if (users.isEmpty()) {
-            throw new NotFoundException(HttpStatus.NOT_FOUND, "No users found");
+            throw new NotFoundException("No users found");
         }
         return users.stream()
                 .map(UserMapper::toUserPostResponseDto)
@@ -53,7 +53,7 @@ public class UserService {
     public UserResponseDto getUserById(Integer id) {
         Optional<UserEntity> user = userRepository.findById(id);
         if (!user.isPresent()) {
-            throw new NotFoundException(HttpStatus.NOT_FOUND, "User not found");
+            throw new NotFoundException("User not found");
         }
         return UserMapper.toUserPostResponseDto(user.get());
     }
