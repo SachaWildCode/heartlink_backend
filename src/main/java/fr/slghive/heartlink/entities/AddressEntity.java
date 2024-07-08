@@ -1,10 +1,14 @@
 package fr.slghive.heartlink.entities;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
@@ -19,7 +23,7 @@ public class AddressEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(nullable = false, length = 100)
     private String street;
@@ -39,4 +43,9 @@ public class AddressEntity {
     @Column(nullable = false, length = 6)
     private String zipCode;
 
+    @OneToMany(mappedBy = "address")
+    private List<UserEntity> users;
+
+    @OneToMany(mappedBy = "address")
+    private List<OrganizationEntity> organizations;
 }
