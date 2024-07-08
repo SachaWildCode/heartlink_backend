@@ -1,16 +1,16 @@
-package fr.slghive.heartlink.dtos_mapper.user_post;
+package fr.slghive.heartlink.dtos_mapper.user;
 
-import fr.slghive.heartlink.dtos.user_post.user.UserPostRequestDto;
-import fr.slghive.heartlink.dtos.user_post.user.UserPostResponseDto;
-import fr.slghive.heartlink.dtos.user_post.user_account.UserAccountPostResponseDto;
-import fr.slghive.heartlink.dtos.user_post.user_address.UserAddressPostResponseDto;
+import fr.slghive.heartlink.dtos.account.AccountResponseDto;
+import fr.slghive.heartlink.dtos.address.AddressResponseDto;
+import fr.slghive.heartlink.dtos.user.UserRequestDto;
+import fr.slghive.heartlink.dtos.user.UserResponseDto;
 import fr.slghive.heartlink.entities.AccountEntity;
 import fr.slghive.heartlink.entities.AddressEntity;
 import fr.slghive.heartlink.entities.UserEntity;
 
-public class UserPostMapper {
+public class UserMapper {
 
-    public static UserEntity toUserEntity(UserPostRequestDto dto) {
+    public static UserEntity toUserEntity(UserRequestDto dto) {
         if (dto.address() == null || dto.account() == null) {
             return null;
         }
@@ -36,9 +36,9 @@ public class UserPostMapper {
         return user;
     }
 
-    public static UserPostResponseDto toUserPostResponseDto(UserEntity user) {
+    public static UserResponseDto toUserPostResponseDto(UserEntity user) {
 
-        UserAddressPostResponseDto userAddressResponseDto = new UserAddressPostResponseDto(
+        AddressResponseDto userAddressResponseDto = new AddressResponseDto(
                 user.getAddress().getStreet(),
                 user.getAddress().getCity(),
                 user.getAddress().getZipCode(),
@@ -46,10 +46,10 @@ public class UserPostMapper {
                 user.getAddress().getStreetNumber(),
                 user.getAddress().getDepartment());
 
-        UserAccountPostResponseDto userAccountResponseDto = new UserAccountPostResponseDto(
+        AccountResponseDto userAccountResponseDto = new AccountResponseDto(
                 user.getAccount().getEmail());
 
-        return new UserPostResponseDto(userAddressResponseDto,
+        return new UserResponseDto(userAddressResponseDto,
                 userAccountResponseDto,
                 user.getFirstname(),
                 user.getLastname(),
