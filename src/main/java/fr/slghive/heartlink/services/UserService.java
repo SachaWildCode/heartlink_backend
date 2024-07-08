@@ -52,10 +52,10 @@ public class UserService {
 
     public UserResponseDto getUserById(Integer id) {
         Optional<UserEntity> user = userRepository.findById(id);
-        if (user.isPresent()) {
-            return UserMapper.toUserPostResponseDto(user.get());
+        if (!user.isPresent()) {
+            throw new NotFoundException(HttpStatus.NOT_FOUND, "User not found");
         }
-        throw new NotFoundException(HttpStatus.NOT_FOUND, "User not found");
+        return UserMapper.toUserPostResponseDto(user.get());
     }
 
 }
