@@ -1,10 +1,8 @@
-package fr.slghive.heartlink.dtos_mapper.address;
+package fr.slghive.heartlink.dtos.address.address_post;
 
-import fr.slghive.heartlink.dtos.address.AddressPostRequest;
-import fr.slghive.heartlink.dtos.address.AddressPostResponse;
 import fr.slghive.heartlink.entities.AddressEntity;
 
-public class AddressMapper {
+public class AddressPostMapper {
     public static AddressPostResponse toDto(AddressEntity entity) {
         return new AddressPostResponse(
                 entity.getStreetNumber(),

@@ -10,8 +10,8 @@ import org.springframework.http.ResponseEntity;
 
 import fr.slghive.heartlink.exceptions.DuplicateException;
 import fr.slghive.heartlink.services.UserService;
-import fr.slghive.heartlink.dtos.user.UserPostRequest;
-import fr.slghive.heartlink.dtos.user.UserPostResponse;
+import fr.slghive.heartlink.dtos.user.user_post.UserPostRequest;
+import fr.slghive.heartlink.dtos.user.user_post.UserPostResponse;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -30,4 +30,5 @@ public class UserController {
             throw new ResponseStatusException(e.getStatus(), e.getMessage());
         }
     }
+
 }

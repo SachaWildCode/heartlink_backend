@@ -1,10 +1,8 @@
-package fr.slghive.heartlink.dtos_mapper.account;
+package fr.slghive.heartlink.dtos.account.account_post;
 
-import fr.slghive.heartlink.dtos.account.AccountPostRequest;
-import fr.slghive.heartlink.dtos.account.AccountPostResponse;
 import fr.slghive.heartlink.entities.AccountEntity;
 
-public class AccountMapper {
+public class AccountPostMapper {
 
     public static AccountPostResponse toDto(AccountEntity entity) {
         return new AccountPostResponse(
