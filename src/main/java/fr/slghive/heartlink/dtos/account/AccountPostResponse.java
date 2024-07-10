@@ -1,6 +1,6 @@
 package fr.slghive.heartlink.dtos.account;
 
-public record AccountRequestDto(
+public record AccountPostResponse(
         String email,
         String password) {
 }

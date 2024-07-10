@@ -23,7 +23,10 @@ public class AddressEntity {
     private Integer id;
 
     @Column(nullable = false, length = 100)
-    private String street;
+    private String streetType;
+
+    @Column(nullable = false, length = 100)
+    private String streetName;
 
     @Column(nullable = false, length = 5)
     private String streetNumber;
