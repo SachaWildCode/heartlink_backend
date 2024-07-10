@@ -30,5 +30,4 @@ public class UserController {
             throw new ResponseStatusException(e.getStatus(), e.getMessage());
         }
     }
-
 }

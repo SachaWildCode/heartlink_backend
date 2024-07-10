@@ -8,8 +8,7 @@ public class AccountMapper {
 
     public static AccountPostResponse toDto(AccountEntity entity) {
         return new AccountPostResponse(
-                entity.getEmail(),
-                entity.getPassword());
+                entity.getEmail());
     }
 
     public static AccountEntity toEntity(AccountPostRequest dto) {

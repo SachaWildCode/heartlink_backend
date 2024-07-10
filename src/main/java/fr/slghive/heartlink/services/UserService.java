@@ -22,6 +22,7 @@ public class UserService {
 
     public UserPostResponse createUser(UserPostRequest dto) {
         UserEntity user = UserMapper.toEntity(dto);
+
         Optional<UserEntity> optUser = userRepository.findByAccountEmail(user.getAccount().getEmail());
         if (optUser.isPresent()) {
             throw new DuplicateException("User already exists");
