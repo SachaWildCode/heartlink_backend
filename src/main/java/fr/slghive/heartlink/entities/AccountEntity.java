@@ -3,19 +3,18 @@ package fr.slghive.heartlink.entities;
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import fr.slghive.heartlink.enums.RoleEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "accounts")
 @Entity
 @Data
@@ -34,6 +33,8 @@ public class AccountEntity {
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime creationDate;
 
-    @OneToOne(mappedBy = "account")
-    private UserEntity user;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private RoleEnum role = RoleEnum.USER;
+
 }
