@@ -1,6 +1,5 @@
 package fr.slghive.heartlink.exceptions.handlers;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,78 +22,85 @@ import io.jsonwebtoken.JwtException;
 
 @ControllerAdvice
 @ResponseBody
-public class ControllerExceptionHandler {
+public class ControllerExceptionHandler extends BaseExceptionHandler {
 
     // Custom exceptions
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ApiError> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
-        ApiError errorDetails = new ApiError(LocalDateTime.now(), ex.getMessage(), request.getDescription(false),
-                ex.getStatus().value());
-        return new ResponseEntity<>(errorDetails, ex.getStatus());
+    public ResponseEntity<ApiError> handleResourceNotFoundException(
+            ResourceNotFoundException ex,
+            WebRequest request) {
+        return handleException(ex, request, ex.getStatus(), null);
     }
 
     @ExceptionHandler(DuplicateException.class)
-    public ResponseEntity<ApiError> handleDuplicateException(DuplicateException ex, WebRequest request) {
-        ApiError errorDetails = new ApiError(LocalDateTime.now(), ex.getMessage(), request.getDescription(false),
-                ex.getStatus().value());
-        return new ResponseEntity<>(errorDetails, ex.getStatus());
+    public ResponseEntity<ApiError> handleDuplicateException(
+            DuplicateException ex,
+            WebRequest request) {
+        return handleException(ex, request, ex.getStatus(), null);
     }
 
     // Global handler for all other exceptions
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiError> handleGlobalException(Exception ex, WebRequest request) {
-        ApiError errorDetails = new ApiError(LocalDateTime.now(), ex.getMessage(), request.getDescription(false),
-                HttpStatus.INTERNAL_SERVER_ERROR.value());
-        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<ApiError> handleGlobalException(
+            Exception ex,
+            WebRequest request) {
+        return handleException(ex, request, HttpStatus.INTERNAL_SERVER_ERROR, null);
     }
 
     // Spring security exceptions
     @ExceptionHandler(InsufficientAuthenticationException.class)
-    public ResponseEntity<ApiError> handleAuthenticationException(InsufficientAuthenticationException ex,
+    public ResponseEntity<ApiError> handleAuthenticationException(
+            InsufficientAuthenticationException ex,
             WebRequest request) {
-        ApiError errorDetails = new ApiError(LocalDateTime.now(), ex.getMessage(),
-                request.getDescription(false), HttpStatus.UNAUTHORIZED.value());
-        return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
+        return handleException(ex, request, HttpStatus.UNAUTHORIZED, null);
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
-    public ResponseEntity<ApiError> handleExpiredJwtException(ExpiredJwtException ex, WebRequest request) {
-        ApiError errorDetails = new ApiError(LocalDateTime.now(), "JWT token has expired",
-                request.getDescription(false), HttpStatus.UNAUTHORIZED.value());
-        return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<ApiError> handleExpiredJwtException(
+            ExpiredJwtException ex,
+            WebRequest request) {
+        return handleException(
+                ex,
+                request,
+                HttpStatus.UNAUTHORIZED,
+                "JWT token has expired");
     }
 
     @ExceptionHandler(JwtException.class)
-    public ResponseEntity<ApiError> handleJwtException(JwtException ex, WebRequest request) {
-        ApiError errorDetails = new ApiError(LocalDateTime.now(), "Invalid JWT token", request.getDescription(false),
-                HttpStatus.BAD_REQUEST.value());
-        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ApiError> handleJwtException(
+            JwtException ex,
+            WebRequest request) {
+        return handleException(
+                ex,
+                request,
+                HttpStatus.BAD_REQUEST,
+                "Invalid JWT token");
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ApiError> handleBadCredentialsException(BadCredentialsException ex, WebRequest request) {
-        ApiError errorDetails = new ApiError(LocalDateTime.now(), ex.getMessage(), request.getDescription(false),
-                HttpStatus.UNAUTHORIZED.value());
-        return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<ApiError> handleBadCredentialsException(
+            BadCredentialsException ex,
+            WebRequest request) {
+        return handleException(ex, request, HttpStatus.UNAUTHORIZED, null);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiError> handleValidationExceptions(MethodArgumentNotValidException ex, WebRequest request) {
-        List<String> errors = ex.getBindingResult()
+    public ResponseEntity<ApiError> handleValidationExceptions(
+            MethodArgumentNotValidException ex,
+            WebRequest request) {
+        List<String> errors = ex
+                .getBindingResult()
                 .getAllErrors()
                 .stream()
                 .map(error -> {
                     if (error instanceof FieldError) {
-                        return ((FieldError) error).getField() + ": " + error.getDefaultMessage();
+                        return (((FieldError) error).getField() + ": " + error.getDefaultMessage());
                     } else {
                         return error.getObjectName() + ": " + error.getDefaultMessage();
                     }
                 })
                 .collect(Collectors.toList());
-
         String errorMessage = String.join(", ", errors);
-        ApiError errorDetails = new ApiError(LocalDateTime.now(), errorMessage, request.getDescription(false),
-                HttpStatus.BAD_REQUEST.value());
-        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+        return handleException(ex, request, HttpStatus.BAD_REQUEST, errorMessage);
     }
 }
