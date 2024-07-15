@@ -16,7 +16,6 @@ import org.springframework.web.context.request.WebRequest;
 
 import fr.slghive.heartlink.exceptions.DuplicateException;
 import fr.slghive.heartlink.exceptions.ResourceNotFoundException;
-import fr.slghive.heartlink.exceptions.format.ApiError;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 

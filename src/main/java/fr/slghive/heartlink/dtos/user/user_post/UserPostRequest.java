@@ -9,11 +9,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record UserPostRequest(
-                @Valid AccountPostRequest account,
-                @Valid AddressPostRequest address,
-                @NotNull LocalDate birthday,
-                @NotBlank String firstname,
-                @NotBlank String lastname,
-                @NotBlank String phone) {
+        @Valid AccountPostRequest account,
+        @Valid AddressPostRequest address,
+        @NotNull LocalDate birthday,
+        @NotBlank String firstname,
+        @NotBlank String lastname,
+        @NotBlank String phone) {
 
 }

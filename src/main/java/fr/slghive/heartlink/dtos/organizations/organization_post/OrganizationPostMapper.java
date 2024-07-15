@@ -7,12 +7,11 @@ public class OrganizationPostMapper {
 
   public static OrganizationPostResponse toDto(OrganizationEntity entity) {
     return new OrganizationPostResponse(
-      entity.getId(),
-      entity.getSocialName(),
-      entity.getDescription(),
-      entity.getIban(),
-      AddressPostMapper.toDto(entity.getAddress())
-    );
+        entity.getId(),
+        entity.getSocialName(),
+        entity.getDescription(),
+        entity.getIban(),
+        AddressPostMapper.toDto(entity.getAddress()));
   }
 
   public static OrganizationEntity toEntity(OrganizationPostRequest dto) {

@@ -1,12 +1,13 @@
 package fr.slghive.heartlink.config;
 
+import java.util.List;
+
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import fr.slghive.heartlink.entities.TypeEntity;
 import fr.slghive.heartlink.repositories.TypeRepository;
-
-import java.util.List;
 
 @Configuration
 public class DefaultTypeInitializer {

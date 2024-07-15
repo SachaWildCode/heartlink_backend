@@ -1,6 +1,7 @@
 package fr.slghive.heartlink.config;
 
 import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -25,64 +26,50 @@ public class SecurityConfig {
   private final HandlerExceptionResolver handlerExceptionResolver;
 
   public SecurityConfig(
-    JwtTokenFilter jwtTokenFilter,
-    HandlerExceptionResolver handlerExceptionResolver
-  ) {
+      JwtTokenFilter jwtTokenFilter,
+      HandlerExceptionResolver handlerExceptionResolver) {
     this.jwtTokenFilter = jwtTokenFilter;
     this.handlerExceptionResolver = handlerExceptionResolver;
   }
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http)
-    throws Exception {
+      throws Exception {
     return http
-      .csrf(csrf -> csrf.disable())
-      .authorizeHttpRequests(auth ->
-        auth
-          .requestMatchers(HttpMethod.GET, "/organizations")
-          .permitAll()
-          .requestMatchers(HttpMethod.POST, "/auth/login")
-          .permitAll()
-          .requestMatchers(HttpMethod.POST, "/auth/register")
-          .permitAll()
-          .requestMatchers(HttpMethod.POST, "/organizations")
-          .hasAnyRole("ADMIN", "OWNER")
-          .anyRequest()
-          .authenticated()
-      )
-      .addFilterBefore(
-        jwtTokenFilter,
-        UsernamePasswordAuthenticationFilter.class
-      )
-      .sessionManagement(session ->
-        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-      )
-      .exceptionHandling(ex ->
-        ex
-          .authenticationEntryPoint((request, response, authException) ->
-            handlerExceptionResolver.resolveException(
-              request,
-              response,
-              null,
-              authException
-            )
-          )
-          .accessDeniedHandler((request, response, accessDeniedException) ->
-            handlerExceptionResolver.resolveException(
-              request,
-              response,
-              null,
-              accessDeniedException
-            )
-          )
-      )
-      .build();
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers(HttpMethod.GET, "/organizations")
+            .permitAll()
+            .requestMatchers(HttpMethod.POST, "/auth/login")
+            .permitAll()
+            .requestMatchers(HttpMethod.POST, "/auth/register")
+            .permitAll()
+            .requestMatchers(HttpMethod.POST, "/organizations")
+            .hasAnyRole("ADMIN", "OWNER")
+            .anyRequest()
+            .authenticated())
+        .addFilterBefore(
+            jwtTokenFilter,
+            UsernamePasswordAuthenticationFilter.class)
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .exceptionHandling(ex -> ex
+            .authenticationEntryPoint((request, response, authException) -> handlerExceptionResolver.resolveException(
+                request,
+                response,
+                null,
+                authException))
+            .accessDeniedHandler(
+                (request, response, accessDeniedException) -> handlerExceptionResolver.resolveException(
+                    request,
+                    response,
+                    null,
+                    accessDeniedException)))
+        .build();
   }
 
   @Bean
   public AuthenticationManager authenticationManager(
-    AuthenticationConfiguration authenticationConfiguration
-  ) throws Exception {
+      AuthenticationConfiguration authenticationConfiguration) throws Exception {
     return authenticationConfiguration.getAuthenticationManager();
   }
 

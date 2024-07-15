@@ -6,8 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.WebRequest;
 
-import fr.slghive.heartlink.exceptions.format.ApiError;
-
 public abstract class BaseExceptionHandler {
 
     protected ResponseEntity<ApiError> buildResponseEntity(

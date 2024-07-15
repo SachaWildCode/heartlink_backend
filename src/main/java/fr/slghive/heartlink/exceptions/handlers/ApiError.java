@@ -1,6 +1,7 @@
-package fr.slghive.heartlink.exceptions.format;
+package fr.slghive.heartlink.exceptions.handlers;
 
 import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
