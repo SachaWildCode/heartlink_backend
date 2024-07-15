@@ -10,6 +10,7 @@ import fr.slghive.heartlink.dtos.account.account_post.AccountPostRequest;
 import fr.slghive.heartlink.dtos.auth.LoginPostResponse;
 import fr.slghive.heartlink.dtos.user.user_post.UserPostRequest;
 import fr.slghive.heartlink.dtos.user.user_post.UserPostResponse;
+import fr.slghive.heartlink.services.AuthService;
 import fr.slghive.heartlink.services.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -19,9 +20,11 @@ import jakarta.validation.Valid;
 public class AuthController {
 
     private final UserService userService;
+    private final AuthService authService;
 
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, AuthService authService) {
         this.userService = userService;
+        this.authService = authService;
 
     }
 
@@ -32,7 +35,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginPostResponse> login(@RequestBody AccountPostRequest dto, HttpServletResponse response) {
-        return ResponseEntity.ok(userService.login(dto, response));
+        return ResponseEntity.ok(authService.login(dto, response));
     }
 
 }
