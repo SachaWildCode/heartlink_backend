@@ -25,10 +25,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
   private final HandlerExceptionResolver handlerExceptionResolver;
 
   public JwtTokenFilter(
-    JwtTokenProvider jwtTokenProvider,
-    UserDetailsService userDetailsService,
-    HandlerExceptionResolver handlerExceptionResolver
-  ) {
+      JwtTokenProvider jwtTokenProvider,
+      UserDetailsService userDetailsService,
+      HandlerExceptionResolver handlerExceptionResolver) {
     this.jwtTokenProvider = jwtTokenProvider;
     this.userDetailsService = userDetailsService;
     this.handlerExceptionResolver = handlerExceptionResolver;
@@ -36,10 +35,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(
-    @NonNull HttpServletRequest request,
-    @NonNull HttpServletResponse response,
-    @NonNull FilterChain filterChain
-  ) throws IOException, ServletException {
+      @NonNull HttpServletRequest request,
+      @NonNull HttpServletResponse response,
+      @NonNull FilterChain filterChain) throws IOException, ServletException {
     try {
       Optional<String> jwtToken = getJwtFromCookies(request);
       jwtToken.ifPresent(this::processToken);
@@ -64,16 +62,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
   private void processToken(String token) {
     if (!jwtTokenProvider.isExpired(token)) {
       String username = jwtTokenProvider.getUsernameFromToken(token);
-      if (
-        username != null &&
-        SecurityContextHolder.getContext().getAuthentication() == null
-      ) {
+      if (username != null &&
+          SecurityContextHolder.getContext().getAuthentication() == null) {
         UserDetails user = userDetailsService.loadUserByUsername(username);
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-          user,
-          null,
-          user.getAuthorities()
-        );
+            user,
+            null,
+            user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }
     }

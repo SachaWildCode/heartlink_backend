@@ -1,4 +1,4 @@
 package fr.slghive.heartlink.dtos.auth;
 
-public record LoginPostResponse(String message) {
+public record LoginPostResponse(String token) {
 }

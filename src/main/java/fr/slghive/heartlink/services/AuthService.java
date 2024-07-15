@@ -28,7 +28,8 @@ public class AuthService {
     }
 
     public LoginPostResponse login(AccountPostRequest dto, HttpServletResponse response) {
-        Authentication authenticate = authenticationManager.authenticate(
+        System.out.println("ok");
+        final Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(dto.email(), dto.password()));
         UserEntity user = (UserEntity) authenticate.getPrincipal();
         Map<String, String> token = jwtTokenProvider.generateToken(user.getAccount().getEmail());

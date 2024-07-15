@@ -38,15 +38,13 @@ public class JwtTokenProvider {
     }
 
     public Map<String, String> generateJwtToken(UserDetails user) {
+        long currentTime = System.currentTimeMillis();
+        long expirationTime = currentTime + expiration;
 
-        final long CurrentTime = System.currentTimeMillis();
-        final long expirationTime = CurrentTime + expiration;
-
-        Map<String, Object> claims = Map.of(
-                "customClaim", "customValue");
+        Map<String, Object> claims = Map.of("customClaim", "customValue");
 
         String token = Jwts.builder()
-                .issuedAt(new Date(CurrentTime))
+                .issuedAt(new Date(currentTime))
                 .expiration(new Date(expirationTime))
                 .subject(user.getUsername())
                 .claims(claims)
@@ -58,8 +56,7 @@ public class JwtTokenProvider {
 
     public Map<String, String> generateToken(String email) {
         UserDetails user = userDetailsService.loadUserByUsername(email);
-        return this.generateJwtToken(user);
-
+        return generateJwtToken(user);
     }
 
     private Claims getClaims(String token) {
@@ -73,5 +70,4 @@ public class JwtTokenProvider {
     public boolean isExpired(String token) {
         return getClaims(token).getExpiration().before(new Date());
     }
-
 }
