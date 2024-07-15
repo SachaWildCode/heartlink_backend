@@ -12,5 +12,4 @@ public interface OrganizationTypeRepository extends CrudRepository<OrganizationT
 
     public List<OrganizationEntity> findOrganizationEntitiesByType(OrganizationType type);
 
-    public OrganizationEntity
 }
