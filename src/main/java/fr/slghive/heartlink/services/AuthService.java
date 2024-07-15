@@ -28,7 +28,6 @@ public class AuthService {
     }
 
     public LoginPostResponse login(AccountPostRequest dto, HttpServletResponse response) {
-        System.out.println("ok");
         final Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(dto.email(), dto.password()));
         UserEntity user = (UserEntity) authenticate.getPrincipal();

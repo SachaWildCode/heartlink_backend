@@ -1,6 +1,7 @@
 package fr.slghive.heartlink.config;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Optional;
 
 import org.springframework.lang.NonNull;
@@ -50,15 +51,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
   }
 
   private Optional<String> getJwtFromCookies(HttpServletRequest request) {
-    final Cookie[] cookies = request.getCookies();
-    if (cookies != null) {
-      for (Cookie cookie : cookies) {
-        if ("token".equals(cookie.getName())) {
-          return Optional.of(cookie.getValue());
-        }
-      }
-    }
-    return Optional.empty();
+    return Optional.ofNullable(request.getCookies())
+        .stream()
+        .flatMap(Arrays::stream)
+        .filter(cookie -> "token".equals(cookie.getName()))
+        .map(Cookie::getValue)
+        .findFirst();
   }
 
   private void processToken(String token) {
