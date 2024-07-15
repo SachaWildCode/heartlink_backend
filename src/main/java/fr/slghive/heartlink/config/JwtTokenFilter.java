@@ -1,8 +1,7 @@
 package fr.slghive.heartlink.config;
 
 import org.springframework.stereotype.Service;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -15,22 +14,22 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+
 import java.io.IOException;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
-@Order(2)
 public class JwtTokenFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
     private final JwtTokenProvider jwtTokenProvider;
-    private final ObjectMapper objectMapper;
+    private final HandlerExceptionResolver handlerExceptionResolver;
 
     public JwtTokenFilter(JwtTokenProvider jwtTokenProvider, UserDetailsService userDetailsService,
-            ObjectMapper objectMapper) {
+            HandlerExceptionResolver handlerExceptionResolver) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.userDetailsService = userDetailsService;
-        this.objectMapper = objectMapper;
+        this.handlerExceptionResolver = handlerExceptionResolver;
     }
 
     @Override
@@ -41,15 +40,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         try {
             Optional<String> jwtToken = getJwtFromCookies(request);
-            jwtToken.ifPresent(token -> processToken(token));
-
+            jwtToken.ifPresent(this::processToken);
             filterChain.doFilter(request, response);
-        } catch (ExpiredJwtException e) {
-            handleException(response, HttpServletResponse.SC_UNAUTHORIZED, "JWT expired");
-            throw e;
-        } catch (Exception e) {
-            handleException(response, HttpServletResponse.SC_BAD_REQUEST, "JWT invalid");
-            throw e;
+        } catch (JwtException e) {
+            handlerExceptionResolver.resolveException(request, response, null, e);
         }
     }
 
@@ -77,10 +71,4 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
     }
 
-    private void handleException(HttpServletResponse response, int status, String errorMessage) throws IOException {
-        response.setStatus(status);
-        response.setContentType("application/json");
-        Map<String, ?> errors = Map.of("status", status, "error_message", errorMessage);
-        response.getWriter().write(objectMapper.writeValueAsString(errors));
-    }
 }

@@ -11,4 +11,6 @@ import fr.slghive.heartlink.entities.OrganizationTypeId;
 public interface OrganizationTypeRepository extends CrudRepository<OrganizationType, OrganizationTypeId> {
 
     public List<OrganizationEntity> findOrganizationEntitiesByType(OrganizationType type);
+
+    public OrganizationEntity
 }

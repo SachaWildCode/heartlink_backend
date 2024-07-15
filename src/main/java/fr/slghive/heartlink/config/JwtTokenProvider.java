@@ -40,7 +40,7 @@ public class JwtTokenProvider {
     public Map<String, String> generateJwtToken(UserDetails user) {
 
         final long CurrentTime = System.currentTimeMillis();
-        final long expirationTime = CurrentTime + (expiration * 60 * 1000);
+        final long expirationTime = CurrentTime + expiration;
 
         Map<String, Object> claims = Map.of(
                 "customClaim", "customValue");

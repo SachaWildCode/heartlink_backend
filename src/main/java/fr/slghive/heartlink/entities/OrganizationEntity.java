@@ -1,5 +1,6 @@
 package fr.slghive.heartlink.entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,7 +28,7 @@ public class OrganizationEntity {
     @Column(nullable = true)
     private String iban;
 
-    @ManyToOne
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", nullable = false)
     private AddressEntity address;
 

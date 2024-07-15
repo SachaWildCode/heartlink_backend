@@ -23,7 +23,6 @@ public class AccountPostMapper {
         AccountEntity account = new AccountEntity();
         account.setEmail(dto.email());
         account.setPassword(this.passwordEncoder.encode(dto.password()));
-        System.out.println(this.passwordEncoder.encode(dto.password()));
         return account;
     }
 }

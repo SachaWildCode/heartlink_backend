@@ -2,10 +2,10 @@ package fr.slghive.heartlink.exceptions;
 
 import org.springframework.http.HttpStatus;
 
-public class NotFoundException extends RuntimeException {
+public class ResourceNotFoundException extends RuntimeException {
     private final HttpStatus status;
 
-    public NotFoundException(String message) {
+    public ResourceNotFoundException(String message) {
         super(message);
         this.status = HttpStatus.NOT_FOUND;
     }
@@ -13,5 +13,4 @@ public class NotFoundException extends RuntimeException {
     public HttpStatus getStatus() {
         return status;
     }
-
 }
