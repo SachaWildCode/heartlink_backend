@@ -37,6 +37,7 @@ public class SecurityConfig {
       throws Exception {
     return http
         .csrf(csrf -> csrf.disable())
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .authorizeHttpRequests(auth -> auth
             .requestMatchers(HttpMethod.GET, "/organizations")
             .permitAll()
@@ -82,9 +83,10 @@ public class SecurityConfig {
   public CorsConfigurationSource corsConfigurationSource() {
     return req -> {
       CorsConfiguration cors = new CorsConfiguration();
-      cors.setAllowedOrigins(List.of("*"));
+      cors.setAllowedOrigins(List.of("http://localhost:4200"));
       cors.setAllowedMethods(List.of("*"));
       cors.setAllowedHeaders(List.of("*"));
+      cors.setAllowCredentials(true);
       return cors;
     };
   }
