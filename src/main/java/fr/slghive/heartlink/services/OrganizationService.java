@@ -34,6 +34,7 @@ public class OrganizationService {
     if (organizations.isEmpty()) {
       throw new ResourceNotFoundException("No organizations found");
     }
+
     return organizations.stream()
         .map(OrganizationGetMapper::toDto)
         .toList();
