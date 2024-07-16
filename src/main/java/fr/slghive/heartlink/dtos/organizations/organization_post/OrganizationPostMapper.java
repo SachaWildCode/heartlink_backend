@@ -1,6 +1,9 @@
 package fr.slghive.heartlink.dtos.organizations.organization_post;
 
+import java.util.stream.Collectors;
+
 import fr.slghive.heartlink.dtos.address.address_post.AddressPostMapper;
+import fr.slghive.heartlink.dtos.type.type_post.TypePostMapper;
 import fr.slghive.heartlink.entities.OrganizationEntity;
 
 public class OrganizationPostMapper {
@@ -11,6 +14,9 @@ public class OrganizationPostMapper {
         entity.getSocialName(),
         entity.getDescription(),
         entity.getIban(),
+        entity.getTypes().stream()
+            .map(TypePostMapper::toDto)
+            .collect(Collectors.toList()),
         AddressPostMapper.toDto(entity.getAddress()));
   }
 
@@ -20,6 +26,9 @@ public class OrganizationPostMapper {
     organization.setDescription(dto.description());
     organization.setIban(dto.iban());
     organization.setAddress(AddressPostMapper.toEntity(dto.address()));
+    organization.setTypes(dto.types().stream()
+        .map(TypePostMapper::toEntity)
+        .collect(Collectors.toList()));
     return organization;
   }
 }

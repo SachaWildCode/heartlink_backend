@@ -33,7 +33,7 @@ public class OrganizationController {
     @PostMapping("")
     public ResponseEntity<OrganizationPostResponse> createOrganization(
             @Valid @RequestBody OrganizationPostRequest organizationPostRequest) {
-        return ResponseEntity.ok(organizationService.createOrganization(organizationPostRequest));
+        return ResponseEntity.ok(organizationService.saveOrganization(organizationPostRequest));
     }
 
 }

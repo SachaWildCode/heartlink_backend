@@ -1,6 +1,9 @@
 package fr.slghive.heartlink.services;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -10,17 +13,20 @@ import fr.slghive.heartlink.dtos.organizations.organization_post.OrganizationPos
 import fr.slghive.heartlink.dtos.organizations.organization_post.OrganizationPostRequest;
 import fr.slghive.heartlink.dtos.organizations.organization_post.OrganizationPostResponse;
 import fr.slghive.heartlink.entities.OrganizationEntity;
-import fr.slghive.heartlink.exceptions.DuplicateException;
+import fr.slghive.heartlink.entities.TypeEntity;
 import fr.slghive.heartlink.exceptions.ResourceNotFoundException;
 import fr.slghive.heartlink.repositories.OrganizationRepository;
+import fr.slghive.heartlink.repositories.TypeRepository;
 
 @Service
 public class OrganizationService {
 
   private final OrganizationRepository organizationRepository;
+  private final TypeRepository typeRepository;
 
-  public OrganizationService(OrganizationRepository organizationRepository) {
+  public OrganizationService(OrganizationRepository organizationRepository, TypeRepository typeRepository) {
     this.organizationRepository = organizationRepository;
+    this.typeRepository = typeRepository;
   }
 
   public List<OrganizationGetResponse> getAllOrganizations() {
@@ -33,12 +39,22 @@ public class OrganizationService {
         .toList();
   }
 
-  public OrganizationPostResponse createOrganization(OrganizationPostRequest organizationPostRequest) {
-    if (organizationRepository.existsBySocialName(organizationPostRequest.socialName())) {
-      throw new DuplicateException("Organization already exists");
-    }
+  public OrganizationPostResponse saveOrganization(OrganizationPostRequest organizationPostRequest) {
+    Set<TypeEntity> types = new HashSet<>();
+    organizationPostRequest.types().forEach(typeRequest -> {
+      Optional<TypeEntity> type = typeRepository.findByName(typeRequest.name());
+      if (type.isEmpty()) {
+        TypeEntity newType = new TypeEntity();
+        newType.setName(typeRequest.name());
+        typeRepository.save(newType);
+        types.add(newType);
+      } else {
+        types.add(type.get());
+      }
+    });
     OrganizationEntity organization = OrganizationPostMapper.toEntity(organizationPostRequest);
-    organization = organizationRepository.save(organization);
+    organization.setTypes(types.stream().toList());
+    organizationRepository.save(organization);
     return OrganizationPostMapper.toDto(organization);
   }
 }
