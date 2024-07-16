@@ -1,6 +1,6 @@
 package fr.slghive.heartlink.entities;
 
-import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -39,6 +39,6 @@ public class OrganizationEntity {
 
     @ManyToMany
     @JoinTable(name = "organization_types", joinColumns = @JoinColumn(name = "organization_id"), inverseJoinColumns = @JoinColumn(name = "type_id"))
-    private List<TypeEntity> types;
+    private Set<TypeEntity> types;
 
 }

@@ -16,7 +16,7 @@ public class OrganizationPostMapper {
         entity.getIban(),
         entity.getTypes().stream()
             .map(TypePostMapper::toDto)
-            .collect(Collectors.toList()),
+            .collect(Collectors.toSet()),
         AddressPostMapper.toDto(entity.getAddress()));
   }
 
@@ -28,7 +28,7 @@ public class OrganizationPostMapper {
     organization.setAddress(AddressPostMapper.toEntity(dto.address()));
     organization.setTypes(dto.types().stream()
         .map(TypePostMapper::toEntity)
-        .collect(Collectors.toList()));
+        .collect(Collectors.toSet()));
     return organization;
   }
 }

@@ -1,6 +1,6 @@
 package fr.slghive.heartlink.entities;
 
-import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,6 +24,6 @@ public class TypeEntity {
     private String name;
 
     @ManyToMany(mappedBy = "types")
-    private List<OrganizationEntity> organizations;
+    private Set<OrganizationEntity> organizations;
 
 }

@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import fr.slghive.heartlink.dtos.organizations.organization_get.OrganizationGetMapper;
@@ -41,6 +40,9 @@ public class OrganizationService {
   }
 
   public OrganizationPostResponse saveOrganization(OrganizationPostRequest organizationPostRequest) {
+    if (organizationRepository.existsBySocialName(organizationPostRequest.socialName())) {
+      throw new DuplicateException("Organization already exists");
+    }
     Set<TypeEntity> types = new HashSet<>();
     organizationPostRequest.types().forEach(typeRequest -> {
       TypeEntity type = typeRepository.findByName(typeRequest.name())
@@ -52,12 +54,9 @@ public class OrganizationService {
       types.add(type);
     });
     OrganizationEntity organization = OrganizationPostMapper.toEntity(organizationPostRequest);
-    organization.setTypes(types.stream().toList());
-    try {
-      organizationRepository.save(organization);
-    } catch (DataIntegrityViolationException e) {
-      throw new DuplicateException("Organization already exists");
-    }
+    organization.setTypes(types);
+    organizationRepository.save(organization);
     return OrganizationPostMapper.toDto(organization);
+
   }
 }

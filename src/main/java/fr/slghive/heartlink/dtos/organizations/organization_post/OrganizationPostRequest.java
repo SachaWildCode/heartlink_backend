@@ -1,6 +1,6 @@
 package fr.slghive.heartlink.dtos.organizations.organization_post;
 
-import java.util.List;
+import java.util.Set;
 
 import fr.slghive.heartlink.dtos.address.address_post.AddressPostRequest;
 import fr.slghive.heartlink.dtos.type.type_post.TypePostRequest;
@@ -11,6 +11,6 @@ public record OrganizationPostRequest(
                 @NotBlank String socialName,
                 @NotBlank String description,
                 @NotBlank String iban,
-                @Valid List<TypePostRequest> types,
+                @Valid Set<TypePostRequest> types,
                 @Valid AddressPostRequest address) {
 }
