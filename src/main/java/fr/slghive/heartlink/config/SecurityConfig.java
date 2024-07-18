@@ -47,6 +47,8 @@ public class SecurityConfig {
             .permitAll()
             .requestMatchers(HttpMethod.POST, "/organizations")
             .hasAnyRole("ADMIN", "OWNER")
+            .requestMatchers(HttpMethod.GET, "/import-organizations")
+            .permitAll()
             .anyRequest()
             .authenticated())
         .addFilterBefore(

@@ -32,13 +32,13 @@ public class AuthService {
                 new UsernamePasswordAuthenticationToken(dto.email(), dto.password()));
         UserEntity user = (UserEntity) authenticate.getPrincipal();
         Map<String, String> token = jwtTokenProvider.generateToken(user.getAccount().getEmail());
-        ResponseCookie cookie = ResponseCookie.from("token", token.get("bearer"))
+        ResponseCookie cookie = ResponseCookie.from("access_token", token.get("Bearer"))
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
-                .maxAge(Duration.ofHours(1))
+                .maxAge(Duration.ofMinutes(60))
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-        return new LoginPostResponse(token.get("bearer"));
+        return new LoginPostResponse("Successful login");
     }
 }

@@ -3,6 +3,7 @@ package fr.slghive.heartlink.config;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.crypto.SecretKey;
 
@@ -24,7 +25,7 @@ public class JwtTokenProvider {
     private String secret;
 
     @Value("${jwt.expiration}")
-    private Long expiration;
+    private Long expirationMinutes;
 
     private SecretKey key;
 
@@ -39,7 +40,7 @@ public class JwtTokenProvider {
 
     public Map<String, String> generateJwtToken(UserDetails user) {
         long currentTime = System.currentTimeMillis();
-        long expirationTime = currentTime + expiration;
+        long expirationTime = currentTime + TimeUnit.MINUTES.toMillis(expirationMinutes);
 
         Map<String, Object> claims = Map.of("customClaim", "customValue");
 
@@ -51,7 +52,7 @@ public class JwtTokenProvider {
                 .signWith(key)
                 .compact();
 
-        return Map.of("bearer", token);
+        return Map.of("Bearer", token);
     }
 
     public Map<String, String> generateToken(String email) {

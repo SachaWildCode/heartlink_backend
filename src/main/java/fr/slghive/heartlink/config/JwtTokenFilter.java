@@ -54,7 +54,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     return Optional.ofNullable(request.getCookies())
         .stream()
         .flatMap(Arrays::stream)
-        .filter(cookie -> "token".equals(cookie.getName()))
+        .filter(cookie -> "access_token".equals(cookie.getName()))
         .map(Cookie::getValue)
         .findFirst();
   }
