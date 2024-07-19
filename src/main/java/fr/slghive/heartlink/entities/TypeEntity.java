@@ -1,19 +1,23 @@
 package fr.slghive.heartlink.entities;
 
-import java.util.Set;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "types")
+@Table(name = "types", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "libTheme")
+})
 @Getter
 @Setter
 public class TypeEntity {
@@ -22,10 +26,10 @@ public class TypeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, unique = true)
-    private String name;
+    @NotBlank
+    @Column(nullable = true, unique = true)
+    private String libTheme;
 
-    @ManyToMany(mappedBy = "types")
-    private Set<OrganizationEntity> organizations;
-
+    @OneToMany(mappedBy = "type")
+    private List<OrganizationEntity> organizations;
 }

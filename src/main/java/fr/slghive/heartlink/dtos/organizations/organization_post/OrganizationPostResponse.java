@@ -1,17 +1,29 @@
 package fr.slghive.heartlink.dtos.organizations.organization_post;
 
-import java.util.Set;
+import java.time.LocalDate;
 
-import fr.slghive.heartlink.dtos.address.address_post.AddressPostResponse;
+import fr.slghive.heartlink.dtos.address_organization.address_organization_post.AddressOrganizationPostResponse;
 import fr.slghive.heartlink.dtos.type.type_post.TypePostResponse;
-import jakarta.validation.Valid;
 
 public record OrganizationPostResponse(
-        Integer id,
-        String socialName,
-        String description,
-        String iban,
-        @Valid Set<TypePostResponse> types,
-        AddressPostResponse address) {
+                Integer id,
+                String name,
+                String sigle,
+                String description,
+                String iban,
+                LocalDate creationDate,
+                String groupement,
+                String idRna,
+                String idEx,
+                LocalDate dateModifRna,
+                String regime,
+                String nature,
+                boolean utilPublique,
+                boolean eligibiliteCec,
+                boolean activeSirene,
+                boolean active,
+                boolean impotsCommerciaux,
+                AddressOrganizationPostResponse addressOrganization,
+                TypePostResponse type) {
 
 }

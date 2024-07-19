@@ -33,7 +33,12 @@ public class OrganizationController {
     @PostMapping("")
     public ResponseEntity<OrganizationPostResponse> createOrganization(
             @Valid @RequestBody OrganizationPostRequest organizationPostRequest) {
-        return ResponseEntity.ok(organizationService.saveOrganization(organizationPostRequest));
+        return ResponseEntity.ok(organizationService.createOrganization(organizationPostRequest));
     }
 
+    @PostMapping("/bulk")
+    public ResponseEntity<List<OrganizationPostResponse>> createOrganizations(
+            @Valid @RequestBody List<OrganizationPostRequest> organizationPostRequests) {
+        return ResponseEntity.ok(organizationService.createOrganizations(organizationPostRequests));
+    }
 }

@@ -3,6 +3,7 @@ package fr.slghive.heartlink.services;
 import java.time.Duration;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,7 +20,11 @@ import jakarta.servlet.http.HttpServletResponse;
 @Service
 public class AuthService {
 
+    @Value("${cookie.expiration}")
+    private int cookieExpiration;
+
     private final AuthenticationManager authenticationManager;
+
     private final JwtTokenProvider jwtTokenProvider;
 
     public AuthService(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
@@ -32,11 +37,12 @@ public class AuthService {
                 new UsernamePasswordAuthenticationToken(dto.email(), dto.password()));
         UserEntity user = (UserEntity) authenticate.getPrincipal();
         Map<String, String> token = jwtTokenProvider.generateToken(user.getAccount().getEmail());
+
         ResponseCookie cookie = ResponseCookie.from("access_token", token.get("Bearer"))
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
-                .maxAge(Duration.ofMinutes(60))
+                .maxAge(Duration.ofMinutes(cookieExpiration))
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         return new LoginPostResponse("Successful login");

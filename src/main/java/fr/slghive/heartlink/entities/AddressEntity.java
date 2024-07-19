@@ -44,6 +44,4 @@ public class AddressEntity {
     @OneToMany(mappedBy = "address")
     private List<UserEntity> users;
 
-    @OneToMany(mappedBy = "address")
-    private List<OrganizationEntity> organizations;
 }
