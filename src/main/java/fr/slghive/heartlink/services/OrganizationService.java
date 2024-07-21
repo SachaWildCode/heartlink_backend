@@ -5,6 +5,9 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import fr.slghive.heartlink.dtos.organizations.organization_get.OrganizationGetMapper;
@@ -14,7 +17,6 @@ import fr.slghive.heartlink.dtos.organizations.organization_post.OrganizationPos
 import fr.slghive.heartlink.dtos.organizations.organization_post.OrganizationPostResponse;
 import fr.slghive.heartlink.entities.OrganizationEntity;
 import fr.slghive.heartlink.entities.TypeEntity;
-import fr.slghive.heartlink.exceptions.ResourceNotFoundException;
 import fr.slghive.heartlink.repositories.OrganizationRepository;
 import fr.slghive.heartlink.repositories.TypeRepository;
 import jakarta.transaction.Transactional;
@@ -32,15 +34,11 @@ public class OrganizationService {
     this.typeRepository = typeRepository;
   }
 
-  public List<OrganizationGetResponse> getAllOrganizations() {
-    List<OrganizationEntity> organizations = organizationRepository.findAll();
-    if (organizations.isEmpty()) {
-      throw new ResourceNotFoundException("No organizations found");
-    }
-
-    return organizations.stream()
-        .map(OrganizationGetMapper::toDto)
-        .toList();
+  public Page<OrganizationGetResponse> getAllOrganizations(Integer page) {
+    Integer size = 50;
+    Pageable pageable = PageRequest.of(page, size);
+    Page<OrganizationEntity> pageOrganization = organizationRepository.findAll(pageable);
+    return pageOrganization.map(OrganizationGetMapper::toDto);
   }
 
   @Transactional

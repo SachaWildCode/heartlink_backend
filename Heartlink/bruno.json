@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "name": "Heartlink",
+  "name": "heartlink_bruno_api",
   "type": "collection",
   "ignore": [
     "node_modules",
