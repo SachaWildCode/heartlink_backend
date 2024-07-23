@@ -35,10 +35,33 @@ public class OrganizationService {
   }
 
   public Page<OrganizationGetResponse> getAllOrganizations(Integer page) {
-    Integer size = 50;
+    Integer size = 48;
     Pageable pageable = PageRequest.of(page, size);
     Page<OrganizationEntity> pageOrganization = organizationRepository.findAll(pageable);
+    System.out.println(pageOrganization.getContent().toString());
     return pageOrganization.map(OrganizationGetMapper::toDto);
+  }
+
+  public Page<OrganizationGetResponse> findAllByUserNotDonated(String username, Integer page) {
+    Integer size = 48;
+    Pageable pageable = PageRequest.of(page, size);
+    Page<OrganizationEntity> pageOrganization = organizationRepository.findAllByUserNotDonated(username, pageable);
+    return pageOrganization.map(OrganizationGetMapper::toDto);
+  }
+
+  public String generateRandomColor() {
+    String color;
+    do {
+      int randomColor = random.nextInt(0xFFFFFF + 1);
+      color = "#" + String.format("%06X", randomColor);
+    } while (isWhiteOrNearWhite(color));
+    return color;
+  }
+
+  private boolean isWhiteOrNearWhite(String color) {
+    int threshold = 0xF0F0F0; // Define a threshold for "near white"
+    int colorValue = Integer.parseInt(color.substring(1), 16);
+    return colorValue >= threshold;
   }
 
   @Transactional
@@ -52,6 +75,7 @@ public class OrganizationService {
           .orElseGet(() -> {
             TypeEntity newType = new TypeEntity();
             newType.setLibTheme(organization.getType().getLibTheme());
+            newType.setColor(generateRandomColor());
             return typeRepository.save(newType);
           });
     } catch (Exception e) {

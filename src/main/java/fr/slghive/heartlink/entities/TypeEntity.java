@@ -26,6 +26,9 @@ public class TypeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable = true)
+    private String color;
+
     @NotBlank
     @Column(nullable = true, unique = true)
     private String libTheme;

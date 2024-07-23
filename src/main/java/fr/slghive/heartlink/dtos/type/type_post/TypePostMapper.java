@@ -5,7 +5,7 @@ import fr.slghive.heartlink.entities.TypeEntity;
 public class TypePostMapper {
 
     public static TypePostResponse toDto(TypeEntity entity) {
-        return new TypePostResponse(entity.getId(), entity.getLibTheme());
+        return new TypePostResponse(entity.getId(), entity.getLibTheme(), entity.getColor());
     }
 
     public static TypeEntity toEntity(TypePostRequest request) {

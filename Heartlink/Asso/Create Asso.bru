@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: {{api_url}}/organizations
+  url: {{api_url}}/organizations/bulk
   body: json
   auth: none
 }
@@ -15,34 +15,4 @@ headers {
 }
 
 body:json {
-  {
-      "adresse_gestion": {
-        "pays": "FRANCE",
-        "cplt_1": "",
-        "cp": "59125",
-        "commune": "Trith-Saint-Léger",
-        "code_insee": "59603"
-      }
-    },
-    "lib_theme1":{
-      "lib_theme1": "Santé et action sociale"}
-    },
-    "identite": {
-      "groupement": "Simple",
-      "sigle": "ETHESTAA",
-      "id_rna": "W596004361",
-      "id_ex": "",
-      "nom": "EDUCATION THERAPEUTIQUE POUR LE SUIVI DE TRAITEMENTS ANTIRETROVIRAUX ET L'ALLAITEMENT (ETHESTAA)",
-      "date_pub_jo": "2011-10-08",
-      "date_creat": "2011-09-21",
-      "date_modif_rna": "2011-09-21",
-      "regime": "loi1901",
-      "nature": "Simplement déclarée",
-      "util_publique": false,
-      "eligibilite_cec": true,
-      "active_sirene": false,
-      "active": true,
-      "impots_commerciaux": false
-    }
-  }
-}
+  []}

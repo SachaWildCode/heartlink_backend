@@ -76,7 +76,8 @@ public class OrganizationPostMapper {
             entity.getAddressGestion().getCodeInsee()),
         new TypePostResponse(
             entity.getType().getId(),
-            entity.getType().getLibTheme()));
+            entity.getType().getLibTheme(),
+            entity.getType().getColor()));
 
   }
 

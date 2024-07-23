@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +31,11 @@ public class OrganizationController {
 
     @GetMapping("")
     public ResponseEntity<Page<OrganizationGetResponse>> getAllOrganizations(
+            @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam(name = "page", defaultValue = "0") Integer page) {
+        if (userDetails != null) {
+            return ResponseEntity.ok(organizationService.findAllByUserNotDonated(userDetails.getUsername(), page));
+        }
         return ResponseEntity.ok(organizationService.getAllOrganizations(page));
     }
 
