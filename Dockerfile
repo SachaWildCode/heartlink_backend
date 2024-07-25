@@ -6,6 +6,7 @@ WORKDIR /build
 
 # Copy the pom.xml and download dependencies
 COPY . .
+RUN chmod +x ./mvnw
 RUN ./mvnw clean package -DskipTests
 
 # Stage 2: Create the final image
