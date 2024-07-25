@@ -29,12 +29,16 @@ public class DonationEntity {
     @EmbeddedId
     private DonationId id;
 
+    // TODO implement stripe and remove nullable true
+    @Column(nullable = true)
+    private Integer amount;
+
     @CreationTimestamp
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)
     private LocalDateTime creationDate;
 
     @Column(nullable = false)
-    private float percentageAttribution;
+    private Float percentageAttribution;
 
     @UpdateTimestamp
     @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
@@ -56,6 +60,6 @@ public class DonationEntity {
         this.user = user;
         this.creationDate = LocalDateTime.now();
         this.updateDate = LocalDateTime.now();
-        this.percentageAttribution = 0;
+        this.percentageAttribution = 0f;
     }
 }

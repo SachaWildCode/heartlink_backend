@@ -1,12 +1,10 @@
 package fr.slghive.heartlink.dtos.donations.donations_get;
 
+import fr.slghive.heartlink.dtos.organizations.organization_get.OrganizationGetResponse;
+
 public record DonationGetResponse(
-                Long id,
-                String name,
-                String description,
-                String amount,
-                String currency,
-                String date,
-                String status) {
+        OrganizationGetResponse organization,
+        Integer amount,
+        Float percentage) {
 
 }

@@ -83,7 +83,7 @@ public class SecurityConfig {
   public CorsConfigurationSource corsConfigurationSource() {
     return req -> {
       CorsConfiguration cors = new CorsConfiguration();
-      cors.setAllowedOrigins(List.of("http://localhost:4200"));
+      cors.setAllowedOrigins(List.of("https://heartlink.slghive.fr"));
       cors.setAllowedMethods(List.of("*"));
       cors.setAllowedHeaders(List.of("*"));
       cors.setAllowCredentials(true);

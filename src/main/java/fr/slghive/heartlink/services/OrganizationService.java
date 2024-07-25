@@ -17,6 +17,7 @@ import fr.slghive.heartlink.dtos.organizations.organization_post.OrganizationPos
 import fr.slghive.heartlink.dtos.organizations.organization_post.OrganizationPostResponse;
 import fr.slghive.heartlink.entities.OrganizationEntity;
 import fr.slghive.heartlink.entities.TypeEntity;
+import fr.slghive.heartlink.entities.UserEntity;
 import fr.slghive.heartlink.repositories.OrganizationRepository;
 import fr.slghive.heartlink.repositories.TypeRepository;
 import jakarta.transaction.Transactional;
@@ -38,14 +39,16 @@ public class OrganizationService {
     Integer size = 48;
     Pageable pageable = PageRequest.of(page, size);
     Page<OrganizationEntity> pageOrganization = organizationRepository.findAll(pageable);
-    System.out.println(pageOrganization.getContent().toString());
     return pageOrganization.map(OrganizationGetMapper::toDto);
   }
 
-  public Page<OrganizationGetResponse> findAllByUserNotDonated(String username, Integer page) {
+  public Page<OrganizationGetResponse> findAllByUserNotDonated(UserEntity user, Integer page) {
     Integer size = 48;
     Pageable pageable = PageRequest.of(page, size);
-    Page<OrganizationEntity> pageOrganization = organizationRepository.findAllByUserNotDonated(username, pageable);
+    Page<OrganizationEntity> pageOrganization = organizationRepository.findAllByUserNotDonated(
+        user.getAccount().getEmail(),
+        pageable);
+
     return pageOrganization.map(OrganizationGetMapper::toDto);
   }
 

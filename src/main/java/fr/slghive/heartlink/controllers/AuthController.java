@@ -1,6 +1,12 @@
 package fr.slghive.heartlink.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +32,15 @@ public class AuthController {
         this.userService = userService;
         this.authService = authService;
 
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<Map<String, String>> logout(@AuthenticationPrincipal UserDetails userDetails,
+            HttpServletResponse response) {
+        authService.logout(response);
+        Map<String, String> responseBody = new HashMap<>();
+        responseBody.put("message", "Logout successful");
+        return ResponseEntity.ok(responseBody);
     }
 
     @PostMapping("/register")

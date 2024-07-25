@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import fr.slghive.heartlink.dtos.organizations.organization_get.OrganizationGetResponse;
 import fr.slghive.heartlink.dtos.organizations.organization_post.OrganizationPostRequest;
 import fr.slghive.heartlink.dtos.organizations.organization_post.OrganizationPostResponse;
+import fr.slghive.heartlink.entities.UserEntity;
 import fr.slghive.heartlink.services.OrganizationService;
 import jakarta.validation.Valid;
 
@@ -31,10 +31,10 @@ public class OrganizationController {
 
     @GetMapping("")
     public ResponseEntity<Page<OrganizationGetResponse>> getAllOrganizations(
-            @AuthenticationPrincipal UserDetails userDetails,
+            @AuthenticationPrincipal UserEntity user,
             @RequestParam(name = "page", defaultValue = "0") Integer page) {
-        if (userDetails != null) {
-            return ResponseEntity.ok(organizationService.findAllByUserNotDonated(userDetails.getUsername(), page));
+        if (user != null) {
+            return ResponseEntity.ok(organizationService.findAllByUserNotDonated(user, page));
         }
         return ResponseEntity.ok(organizationService.getAllOrganizations(page));
     }

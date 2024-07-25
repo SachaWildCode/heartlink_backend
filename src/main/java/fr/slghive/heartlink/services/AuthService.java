@@ -32,6 +32,16 @@ public class AuthService {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    public void logout(HttpServletResponse response) {
+        ResponseCookie cookie = ResponseCookie.from("access_token", "")
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(0)
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+    }
+
     public LoginPostResponse login(AccountPostRequest dto, HttpServletResponse response) {
         final Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(dto.email(), dto.password()));

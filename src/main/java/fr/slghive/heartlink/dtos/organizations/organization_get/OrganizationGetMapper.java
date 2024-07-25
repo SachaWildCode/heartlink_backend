@@ -7,6 +7,7 @@ import fr.slghive.heartlink.entities.OrganizationEntity;
 public class OrganizationGetMapper {
     public static OrganizationGetResponse toDto(OrganizationEntity entity) {
         return new OrganizationGetResponse(
+                entity.getDonations().size(),
                 entity.getId(),
                 entity.getName(),
                 entity.getSigle(),
