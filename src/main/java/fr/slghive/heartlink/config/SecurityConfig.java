@@ -16,6 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @Configuration
@@ -81,14 +82,15 @@ public class SecurityConfig {
 
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
-    return req -> {
-      CorsConfiguration cors = new CorsConfiguration();
-      cors.setAllowedOrigins(List.of("https://heartlink.slghive.fr"));
-      cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-      cors.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
-      cors.setAllowCredentials(true);
-      cors.setMaxAge(3600L);
-      return cors;
-    };
+    CorsConfiguration corsConfig = new CorsConfiguration();
+    corsConfig.setAllowedOrigins(List.of("https://heartlink.slghive.fr")); // Set allowed origins
+    corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Set allowed methods
+    corsConfig.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type")); // Set allowed headers
+    corsConfig.setAllowCredentials(true);
+    corsConfig.setMaxAge(3600L); // Set max age for preflight requests
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", corsConfig); // Register CORS configuration for all paths
+
+    return source;
   }
 }
