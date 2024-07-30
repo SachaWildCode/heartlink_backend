@@ -37,7 +37,7 @@ public class SecurityConfig {
       throws Exception {
     return http
         .csrf(csrf -> csrf.disable())
-        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+        .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Ensure CORS is applied here
         .authorizeHttpRequests(auth -> auth
             .requestMatchers(HttpMethod.GET, "/organizations")
             .permitAll()
@@ -84,9 +84,10 @@ public class SecurityConfig {
     return req -> {
       CorsConfiguration cors = new CorsConfiguration();
       cors.setAllowedOrigins(List.of("https://heartlink.slghive.fr"));
-      cors.setAllowedMethods(List.of("*"));
-      cors.setAllowedHeaders(List.of("*"));
+      cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+      cors.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
       cors.setAllowCredentials(true);
+      cors.setMaxAge(3600L);
       return cors;
     };
   }
