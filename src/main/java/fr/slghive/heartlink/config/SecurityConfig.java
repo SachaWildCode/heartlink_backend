@@ -37,8 +37,6 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http)
       throws Exception {
     return http
-        .csrf(csrf -> csrf.disable())
-        .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Ensure CORS is applied here
         .authorizeHttpRequests(auth -> auth
             .requestMatchers(HttpMethod.GET, "/organizations")
             .permitAll()
@@ -66,7 +64,8 @@ public class SecurityConfig {
                     response,
                     null,
                     accessDeniedException)))
-        .build();
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+        .csrf(csrf -> csrf.disable()).build();
   }
 
   @Bean
@@ -83,12 +82,12 @@ public class SecurityConfig {
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration corsConfig = new CorsConfiguration();
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     corsConfig.setAllowedOrigins(List.of("https://heartlink.slghive.fr")); // Set allowed origins
     corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Set allowed methods
     corsConfig.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type")); // Set allowed headers
     corsConfig.setAllowCredentials(true);
     corsConfig.setMaxAge(3600L); // Set max age for preflight requests
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", corsConfig); // Register CORS configuration for all paths
 
     return source;
